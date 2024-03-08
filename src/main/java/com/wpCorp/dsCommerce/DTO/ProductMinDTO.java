@@ -29,7 +29,7 @@ public class ProductMinDTO {
     public ProductMinDTO(ProductEntity entity) {
         this.id = entity.getId();
         this.name = entity.getName();
-        this.description = entity.getShortDescription();
+        this.description = entity.getLongDescription();
         this.price = entity.getPrice();
         this.imgUrl = entity.getImgUrl();
         for (CategoryEntity cate : entity.getCategories()) {
