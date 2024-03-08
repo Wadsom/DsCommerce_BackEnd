@@ -20,8 +20,7 @@ public class CategoryEntity {
     public CategoryEntity() {
     }
 
-    public CategoryEntity(Long id, String name) {
-        this.id = id;
+    public CategoryEntity( String name) {
         this.name = name;
 
     }
