@@ -1,5 +1,7 @@
 package com.wpCorp.dsCommerce.Service;
 
+import com.wpCorp.dsCommerce.DTO.ProductMinDTO;
+import com.wpCorp.dsCommerce.Entity.ProductEntity;
 import com.wpCorp.dsCommerce.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +14,9 @@ public class ProductService {
     private ProductRepository productRepo;
 
     @Transactional(readOnly = true)
-    public ProductDTO findAll(String name, Pageable pageable){
-
+    public ProductMinDTO findAll(String name, Pageable pageable) {
+        //  ProductEntity prod = productRepo.searchByNameOrAll(name, pageable);
+        return null;
     }
 
 

@@ -1,6 +1,11 @@
 package com.wpCorp.dsCommerce.DTO;
 
+import com.wpCorp.dsCommerce.Entity.CategoryEntity;
+import com.wpCorp.dsCommerce.Entity.ProductEntity;
 import jakarta.persistence.Column;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductMinDTO {
     private Long id;
@@ -8,6 +13,7 @@ public class ProductMinDTO {
     private String description;
     private Double price;
     private String imgUrl;
+    private List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductMinDTO() {
     }
@@ -18,6 +24,17 @@ public class ProductMinDTO {
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public ProductMinDTO(ProductEntity entity) {
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.description = entity.getShortDescription();
+        this.price = entity.getPrice();
+        this.imgUrl = entity.getImgUrl();
+        for (CategoryEntity cate : entity.getCategories()) {
+            categories.add(new CategoryDTO(cate));
+        }
     }
 
     public Long getId() {
