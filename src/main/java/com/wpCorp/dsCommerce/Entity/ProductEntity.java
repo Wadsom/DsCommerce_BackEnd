@@ -2,7 +2,9 @@ package com.wpCorp.dsCommerce.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_product")
@@ -12,9 +14,16 @@ public class ProductEntity {
     private Long id;
     private String name;
     private String shortDescription;
+    @Column(columnDefinition = "TEXT")
     private String longDescription;
     private Double price;
     private String imgUrl;
+    @ManyToMany
+    @JoinTable(name = "tb_products_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<CategoryEntity> categories = new HashSet<>();
 
     public ProductEntity() {
     }
@@ -69,6 +78,10 @@ public class ProductEntity {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Set<CategoryEntity> getCategories() {
+        return categories;
     }
 
     @Override
