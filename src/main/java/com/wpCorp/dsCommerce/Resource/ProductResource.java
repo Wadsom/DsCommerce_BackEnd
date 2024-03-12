@@ -39,5 +39,12 @@ public class ProductResource {
         return ResponseEntity.created(uri).body(dto);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProductMinDTO> updateProd(@PathVariable Long id, @RequestBody @Valid ProductMinDTO dto) {
+        dto = productServ.alterMode(id, dto);
+        return ResponseEntity.ok().body(dto);
+    }
+
+
 
 }

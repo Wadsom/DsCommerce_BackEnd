@@ -39,7 +39,6 @@ public class ProductService {
 
     @Transactional
     public ProductMinDTO newProd(ProductMinDTO dto) {
-        if (checkProd(dto)) throw new ProductExistsException("item já existe !");
         ProductEntity item = new ProductEntity();
         item.setName(dto.getName());
         item.setImgUrl(dto.getImgUrl());
@@ -53,6 +52,23 @@ public class ProductService {
         return new ProductMinDTO(item);
     }
 
+    @Transactional
+    public ProductMinDTO alterMode(Long id, ProductMinDTO dto) {
+        ProductEntity prod = productRepo.findById(id).orElseThrow(() -> new ProductNotFound("Product not found!"));
+        prod.setName(dto.getName());
+        prod.setPrice(dto.getPrice());
+        prod.setLongDescription(dto.getDescription());
+        prod.setImgUrl(dto.getImgUrl());
+        for (CategoryDTO cat : dto.getCategories()) {
+            CategoryEntity cate = categoryRepo.getReferenceById(cat.getId());
+            prod.addCategories(cate);
+        }
+        prod = productRepo.save(prod);
+        return new ProductMinDTO(prod);
+    }
+
+
+
     @Transactional(readOnly = true)
     private Boolean checkProd(ProductMinDTO dto) {
         List<ProductEntity> result = productRepo.findAll();
@@ -63,7 +79,6 @@ public class ProductService {
         }
         return false;
     }
-//$ git commit -m "feat: Insert Product ( ProductResource, ProductService ) and ProductExistsException"
 }
 
 
