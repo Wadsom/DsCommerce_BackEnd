@@ -6,12 +6,15 @@ import com.wpCorp.dsCommerce.Entity.CategoryEntity;
 import com.wpCorp.dsCommerce.Entity.ProductEntity;
 import com.wpCorp.dsCommerce.Repository.CategoryRepository;
 import com.wpCorp.dsCommerce.Repository.ProductRepository;
+import com.wpCorp.dsCommerce.Service.Exceptions.DatabaseException;
 import com.wpCorp.dsCommerce.Service.Exceptions.ProductExistsException;
 import com.wpCorp.dsCommerce.Service.Exceptions.ProductNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
@@ -67,6 +70,16 @@ public class ProductService {
         return new ProductMinDTO(prod);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!productRepo.existsById(id)) throw new ProductNotFound("Product not found");
+        try {
+            productRepo.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Integration Violation");
+        }
+
+    }
 
 
     @Transactional(readOnly = true)
