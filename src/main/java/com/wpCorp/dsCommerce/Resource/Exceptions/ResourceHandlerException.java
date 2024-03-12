@@ -1,5 +1,8 @@
 package com.wpCorp.dsCommerce.Resource.Exceptions;
 
+import ch.qos.logback.core.status.InfoStatus;
+import com.wpCorp.dsCommerce.Entity.ProductEntity;
+import com.wpCorp.dsCommerce.Service.Exceptions.ProductExistsException;
 import com.wpCorp.dsCommerce.Service.Exceptions.ProductNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,18 @@ public class ResourceHandlerException {
         stdErr.setTimeStamp(Instant.now());
         stdErr.setStatus(status.value());
         return ResponseEntity.status(status).body(stdErr);
+    }
+
+    @ExceptionHandler(ProductExistsException.class)
+    public ResponseEntity<StandarError> prodExists(HttpServletRequest request, ProductExistsException e) {
+        HttpStatus sts = HttpStatus.BAD_REQUEST;
+        StandarError stdErr = new StandarError();
+        stdErr.setError("Product Exception");
+        stdErr.setMessage(e.getMessage());
+        stdErr.setStatus(sts.value());
+        stdErr.setPath(request.getRequestURI());
+        stdErr.setTimeStamp(Instant.now());
+        return ResponseEntity.status(sts).body(stdErr);
     }
 
 }

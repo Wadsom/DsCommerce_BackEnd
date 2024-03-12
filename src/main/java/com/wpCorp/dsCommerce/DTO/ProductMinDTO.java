@@ -2,7 +2,6 @@ package com.wpCorp.dsCommerce.DTO;
 
 import com.wpCorp.dsCommerce.Entity.CategoryEntity;
 import com.wpCorp.dsCommerce.Entity.ProductEntity;
-import jakarta.persistence.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class ProductMinDTO {
         this.price = entity.getPrice();
         this.imgUrl = entity.getImgUrl();
         for (CategoryEntity cate : entity.getCategories()) {
-            categories.add(new CategoryDTO(cate));
+            categories.add(new CategoryDTO(cate.getId(), cate.getName()));
         }
     }
 
@@ -55,5 +54,9 @@ public class ProductMinDTO {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 }

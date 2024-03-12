@@ -2,13 +2,15 @@ package com.wpCorp.dsCommerce.Entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_product")
-public class ProductEntity {
+public class ProductEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,11 +29,12 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(String name,String longDescription, Double price, String imgUrl) {
+    public ProductEntity(String name, String longDescription, Double price, String imgUrl) {
         this.name = name;
         this.longDescription = longDescription;
         this.price = price;
         this.imgUrl = imgUrl;
+
     }
 
     public Long getId() {
@@ -45,7 +48,6 @@ public class ProductEntity {
     public void setName(String name) {
         this.name = name;
     }
-
 
 
     public String getLongDescription() {
@@ -74,6 +76,10 @@ public class ProductEntity {
 
     public Set<CategoryEntity> getCategories() {
         return categories;
+    }
+
+    public void addCategories(CategoryEntity cate) {
+        categories.add(cate);
     }
 
     @Override
