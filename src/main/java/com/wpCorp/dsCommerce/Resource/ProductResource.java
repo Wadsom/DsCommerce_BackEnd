@@ -3,15 +3,12 @@ package com.wpCorp.dsCommerce.Resource;
 import com.wpCorp.dsCommerce.DTO.ProductMinDTO;
 import com.wpCorp.dsCommerce.Service.ProductService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriBuilder;
 
 import java.net.URI;
 

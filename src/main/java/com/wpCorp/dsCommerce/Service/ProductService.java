@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.util.List;
+
 
 @Service
 public class ProductService {
@@ -36,7 +39,7 @@ public class ProductService {
 
     @Transactional
     public ProductMinDTO newProd(ProductMinDTO dto) {
-        if (productRepo.findByName(dto.getName())) throw new ProductExistsException("Este produto já existe!");
+        if (checkProd(dto)) throw new ProductExistsException("item já existe !");
         ProductEntity item = new ProductEntity();
         item.setName(dto.getName());
         item.setImgUrl(dto.getImgUrl());
@@ -49,4 +52,19 @@ public class ProductService {
         item = productRepo.save(item);
         return new ProductMinDTO(item);
     }
+
+    @Transactional(readOnly = true)
+    private Boolean checkProd(ProductMinDTO dto) {
+        List<ProductEntity> result = productRepo.findAll();
+        for (ProductEntity ent : result) {
+            if (ent.equals(dto)) {
+                return true;
+            }
+        }
+        return false;
+    }
+//$ git commit -m "feat: Insert Product ( ProductResource, ProductService ) and ProductExistsException"
 }
+
+
+
