@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.util.List;
-
 
 @Service
 public class ProductService {
@@ -42,17 +39,21 @@ public class ProductService {
 
     @Transactional
     public ProductMinDTO newProd(ProductMinDTO dto) {
-        ProductEntity item = new ProductEntity();
-        item.setName(dto.getName());
-        item.setImgUrl(dto.getImgUrl());
-        item.setLongDescription(dto.getDescription());
-        item.setPrice(dto.getPrice());
-        for (CategoryDTO cat : dto.getCategories()) {
-            CategoryEntity cate = categoryRepo.getReferenceById(cat.getId());
-            item.addCategories(cate);
+        try {
+            ProductEntity item = new ProductEntity();
+            item.setName(dto.getName());
+            item.setImgUrl(dto.getImgUrl());
+            item.setLongDescription(dto.getDescription());
+            item.setPrice(dto.getPrice());
+            for (CategoryDTO cat : dto.getCategories()) {
+                CategoryEntity cate = categoryRepo.getReferenceById(cat.getId());
+                item.addCategories(cate);
+            }
+            item = productRepo.save(item);
+            return new ProductMinDTO(item);
+        } catch (DataIntegrityViolationException e) {
+            throw new ProductExistsException("Product already exists");
         }
-        item = productRepo.save(item);
-        return new ProductMinDTO(item);
     }
 
     @Transactional
@@ -82,16 +83,6 @@ public class ProductService {
     }
 
 
-    @Transactional(readOnly = true)
-    private Boolean checkProd(ProductMinDTO dto) {
-        List<ProductEntity> result = productRepo.findAll();
-        for (ProductEntity ent : result) {
-            if (ent.equals(dto)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
 
 

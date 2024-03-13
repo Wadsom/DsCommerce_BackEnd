@@ -14,11 +14,13 @@ public class ProductEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
-    @Column(columnDefinition = "TEXT", name = "description")
+    @Column(columnDefinition = "TEXT", unique = true, name = "description")
     private String longDescription;
+    @Column(unique = true)
     private Double price;
-    @Column(name = "img_url")
+    @Column(name = "img_url", unique = true)
     private String imgUrl;
     @ManyToMany
     @JoinTable(name = "tb_product_category",

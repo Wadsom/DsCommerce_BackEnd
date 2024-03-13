@@ -1,8 +1,6 @@
 package com.wpCorp.dsCommerce.Resource.Exceptions;
 
-import com.wpCorp.dsCommerce.Service.Exceptions.CategoryNotFoundException;
-import com.wpCorp.dsCommerce.Service.Exceptions.ProductExistsException;
-import com.wpCorp.dsCommerce.Service.Exceptions.ProductNotFound;
+import com.wpCorp.dsCommerce.Service.Exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +38,18 @@ public class ResourceHandlerException {
         return ResponseEntity.status(sts).body(stdErr);
     }
 
+    @ExceptionHandler(CategoryExistsException.class)
+    public ResponseEntity<StandarError> categoryNotFound(HttpServletRequest request, CategoryExistsException e) {
+        HttpStatus sts = HttpStatus.BAD_REQUEST;
+        StandarError stdErr = new StandarError();
+        stdErr.setTimeStamp(Instant.now());
+        stdErr.setStatus(sts.value());
+        stdErr.setPath(request.getRequestURI());
+        stdErr.setError(e.getMessage());
+        stdErr.setMessage("Category Exception");
+        return ResponseEntity.status(sts).body(stdErr);
+    }
+
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<StandarError> categoryNotFound(HttpServletRequest request, CategoryNotFoundException e) {
         HttpStatus sts = HttpStatus.NOT_FOUND;
@@ -64,6 +74,18 @@ public class ResourceHandlerException {
         for (FieldError field : e.getBindingResult().getFieldErrors()) {
             stdErr.addMessage(field.getField(), field.getDefaultMessage());
         }
+        return ResponseEntity.status(sts).body(stdErr);
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandarError> dataIntegratViolation(HttpServletRequest request, DatabaseException e) {
+        HttpStatus sts = HttpStatus.BAD_REQUEST;
+        StandarError stdErr = new StandarError();
+        stdErr.setTimeStamp(Instant.now());
+        stdErr.setStatus(sts.value());
+        stdErr.setPath(request.getRequestURI());
+        stdErr.setError(e.getMessage());
+        stdErr.setMessage("Database Exception");
         return ResponseEntity.status(sts).body(stdErr);
     }
 
