@@ -1,13 +1,14 @@
 package com.wpCorp.dsCommerce.Entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_role")
-public class RoleEntity implements Serializable {
+public class RoleEntity implements Serializable, GrantedAuthority {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,7 @@ public class RoleEntity implements Serializable {
         return id;
     }
 
+    @Override
     public String getAuthority() {
         return authority;
     }

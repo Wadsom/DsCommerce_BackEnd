@@ -1,6 +1,6 @@
 package com.wpCorp.dsCommerce.Service;
 
-import com.wpCorp.dsCommerce.Config.AppConfig;
+import com.wpCorp.dsCommerce.Config.AuthorizationServerConfig;
 import com.wpCorp.dsCommerce.DTO.RoleDTO;
 import com.wpCorp.dsCommerce.DTO.UserDTO;
 import com.wpCorp.dsCommerce.Entity.RoleEntity;
@@ -11,6 +11,9 @@ import com.wpCorp.dsCommerce.Service.Exceptions.UserExistsException;
 import com.wpCorp.dsCommerce.Service.Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +21,9 @@ import java.util.List;
 
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     @Autowired
-    private AppConfig auth;
+    private AuthorizationServerConfig auth;
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -59,4 +62,8 @@ public class UserService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 }

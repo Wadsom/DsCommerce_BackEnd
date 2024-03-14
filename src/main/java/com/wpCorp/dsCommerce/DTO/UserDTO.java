@@ -1,9 +1,7 @@
 package com.wpCorp.dsCommerce.DTO;
 
-import com.wpCorp.dsCommerce.Config.AppConfig;
 import com.wpCorp.dsCommerce.Entity.RoleEntity;
 import com.wpCorp.dsCommerce.Entity.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.HashSet;
