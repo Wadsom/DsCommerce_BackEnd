@@ -1,5 +1,6 @@
 package com.wpCorp.dsCommerce.Entity;
 
+import com.wpCorp.dsCommerce.Projections.UserDetailsProjection;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -22,6 +23,11 @@ public class RoleEntity implements Serializable, GrantedAuthority {
     public RoleEntity(Long id, String authority) {
         this.id = id;
         this.authority = authority;
+    }
+
+    public RoleEntity(UserDetailsProjection projection) {
+        this.id = projection.getRoleId();
+        this.authority = projection.getAuthority();
     }
 
     public Long getId() {

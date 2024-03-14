@@ -1,15 +1,17 @@
 package com.wpCorp.dsCommerce.Service;
 
-import com.wpCorp.dsCommerce.Config.AuthorizationServerConfig;
+import com.wpCorp.dsCommerce.Config.AppConfig;
 import com.wpCorp.dsCommerce.DTO.RoleDTO;
 import com.wpCorp.dsCommerce.DTO.UserDTO;
 import com.wpCorp.dsCommerce.Entity.RoleEntity;
 import com.wpCorp.dsCommerce.Entity.UserEntity;
+import com.wpCorp.dsCommerce.Projections.UserDetailsProjection;
 import com.wpCorp.dsCommerce.Repository.RoleRepository;
 import com.wpCorp.dsCommerce.Repository.UserRepository;
 import com.wpCorp.dsCommerce.Service.Exceptions.UserExistsException;
 import com.wpCorp.dsCommerce.Service.Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,7 +25,7 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    private AuthorizationServerConfig auth;
+    private AppConfig auth;
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -63,7 +65,15 @@ public class UserService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        List<UserDetailsProjection> result = userRepo.searchUserAndRolesByEmail(email);
+        if (result.isEmpty()) throw new UserNotFoundException("User not found");
+        UserEntity user = new UserEntity();
+        user.setEmail(result.get(0).getUsername());
+        user.setPassword(result.get(0).getPassword());
+        for (UserDetailsProjection details : result) {
+            user.addRoles(new RoleEntity(details));
+        }
+        return user;
     }
 }
