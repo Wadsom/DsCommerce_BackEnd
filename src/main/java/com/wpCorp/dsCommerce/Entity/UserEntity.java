@@ -21,11 +21,12 @@ public class UserEntity implements Serializable {
     @Size(min = 8, max = 17, message = "Insira um número com Estado de celular valido")
     private String name;
     @Email(message = "Insira um email valido")
+    @Column(unique = true)
     private String email;
     @Size(min = 11, max = 11, message = "Insira um número com Estado de celular valido")
     private String phone;
     private LocalDate birth_date;
-    @Size( message = "Insira uma senha valida")
+    @Size(message = "Insira uma senha valida")
     private String password;
     @ManyToMany
     @JoinTable(name = "tb_user_role",
@@ -96,6 +97,7 @@ public class UserEntity implements Serializable {
     public void addRoles(RoleEntity role) {
         roles.add(role);
     }
+
 
     public boolean hasRole(String roleName) {
         for (RoleEntity role : getRoles()) {

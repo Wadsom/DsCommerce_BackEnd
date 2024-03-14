@@ -89,4 +89,16 @@ public class ResourceHandlerException {
         return ResponseEntity.status(sts).body(stdErr);
     }
 
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<StandarError> UserExists(HttpServletRequest request, UserExistsException e) {
+        HttpStatus sts = HttpStatus.BAD_REQUEST;
+        StandarError stdErr = new StandarError();
+        stdErr.setTimeStamp(Instant.now());
+        stdErr.setStatus(sts.value());
+        stdErr.setPath(request.getRequestURI());
+        stdErr.setError(e.getMessage());
+        stdErr.setMessage("Database Exception");
+        return ResponseEntity.status(sts).body(stdErr);
+    }
+
 }

@@ -1,19 +1,15 @@
 package com.wpCorp.dsCommerce.DTO;
 
+import com.wpCorp.dsCommerce.Config.AppConfig;
 import com.wpCorp.dsCommerce.Entity.RoleEntity;
 import com.wpCorp.dsCommerce.Entity.UserEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class UserDTO {
-
 
     private Long id;
     private String name;
@@ -21,7 +17,7 @@ public class UserDTO {
     private String phone;
     private LocalDate bithdate;
     private String password;
-    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleDTO> roles = new HashSet<>();
 
     public UserDTO() {
     }
@@ -35,11 +31,11 @@ public class UserDTO {
     }
 
     public UserDTO(UserEntity user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
         this.bithdate = user.getBirth_date();
-        this.password = user.getPassword();
         for (RoleEntity role : user.getRoles()) {
             addRoles(role);
         }
@@ -89,19 +85,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<RoleEntity> getRoles() {
+    public Set<RoleDTO> getRoles() {
         return roles;
     }
 
     public void addRoles(RoleEntity role) {
-        roles.add(role);
-    }
-
-    public boolean hasRole(String roleName) {
-        for (RoleEntity role : getRoles()) {
-            if (role.getAuthority().equals(roleName)) return true;
-        }
-        return false;
+        roles.add(new RoleDTO(role));
     }
 
 

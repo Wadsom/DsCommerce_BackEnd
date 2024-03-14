@@ -2,13 +2,16 @@ package com.wpCorp.dsCommerce.Resource;
 
 import com.wpCorp.dsCommerce.DTO.UserDTO;
 import com.wpCorp.dsCommerce.Service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.naming.directory.SearchResult;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,6 +30,13 @@ public class UserResource {
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         UserDTO user = userServ.getUser(id);
         return ResponseEntity.ok().body(user);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO dto) {
+        dto = userServ.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
 }
