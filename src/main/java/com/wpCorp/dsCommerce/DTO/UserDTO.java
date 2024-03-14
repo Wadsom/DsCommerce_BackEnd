@@ -1,48 +1,48 @@
-package com.wpCorp.dsCommerce.Entity;
+package com.wpCorp.dsCommerce.DTO;
 
+import com.wpCorp.dsCommerce.Entity.RoleEntity;
+import com.wpCorp.dsCommerce.Entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Table(name = "tb_user")
-public class UserEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
+
+
     private Long id;
-    @Size(min = 8, max = 17, message = "Insira um número com Estado de celular valido")
     private String name;
-    @Email(message = "Insira um email valido")
     private String email;
-    @Size(min = 11, max = 11, message = "Insira um número com Estado de celular valido")
     private String phone;
-    private LocalDate birth_date;
-    @Size( message = "Insira uma senha valida")
+    private LocalDate bithdate;
     private String password;
-    @ManyToMany
-    @JoinTable(name = "tb_user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
     private Set<RoleEntity> roles = new HashSet<>();
 
-    public UserEntity() {
+    public UserDTO() {
     }
 
-    public UserEntity(String name, String email, String phone, LocalDate bithdate, String password) {
+    public UserDTO(String name, String email, String phone, LocalDate bithdate, String password) {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.birth_date = bithdate;
+        this.bithdate = bithdate;
         this.password = password;
+    }
+
+    public UserDTO(UserEntity user) {
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+        this.bithdate = user.getBirth_date();
+        this.password = user.getPassword();
+        for (RoleEntity role : user.getRoles()) {
+            addRoles(role);
+        }
     }
 
     public Long getId() {
@@ -73,12 +73,12 @@ public class UserEntity implements Serializable {
         this.phone = phone;
     }
 
-    public LocalDate getBirth_date() {
-        return birth_date;
+    public LocalDate getBithdate() {
+        return bithdate;
     }
 
-    public void setBirth_date(LocalDate birth_date) {
-        this.birth_date = birth_date;
+    public void setBithdate(LocalDate bithdate) {
+        this.bithdate = bithdate;
     }
 
     public String getPassword() {
@@ -105,16 +105,5 @@ public class UserEntity implements Serializable {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email);
-    }
 }
+

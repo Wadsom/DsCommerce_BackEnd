@@ -2,19 +2,18 @@ package com.wpCorp.dsCommerce.Entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_roles")
-public class RoleEntity {
+@Table(name = "tb_role")
+public class RoleEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String authority;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
 
     public RoleEntity() {
     }

@@ -16,9 +16,8 @@ public class ProductEntity implements Serializable {
     private Long id;
     @Column(unique = true)
     private String name;
-    @Column(columnDefinition = "TEXT", unique = true, name = "description")
+    @Column(columnDefinition = "TEXT", name = "description")
     private String longDescription;
-    @Column(unique = true)
     private Double price;
     @Column(name = "img_url", unique = true)
     private String imgUrl;
