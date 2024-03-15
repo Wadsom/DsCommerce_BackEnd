@@ -88,7 +88,17 @@ public class ResourceHandlerException {
         stdErr.setMessage("Database Exception");
         return ResponseEntity.status(sts).body(stdErr);
     }
-
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<StandarError> categoryNotFound(HttpServletRequest request, UserNotFoundException e) {
+        HttpStatus sts = HttpStatus.NOT_FOUND;
+        StandarError stdErr = new StandarError();
+        stdErr.setTimeStamp(Instant.now());
+        stdErr.setStatus(sts.value());
+        stdErr.setPath(request.getRequestURI());
+        stdErr.setError(e.getMessage());
+        stdErr.setMessage("User Exception");
+        return ResponseEntity.status(sts).body(stdErr);
+    }
     @ExceptionHandler(UserExistsException.class)
     public ResponseEntity<StandarError> UserExists(HttpServletRequest request, UserExistsException e) {
         HttpStatus sts = HttpStatus.BAD_REQUEST;

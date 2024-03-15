@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.naming.directory.SearchResult;
@@ -37,6 +38,12 @@ public class UserResource {
         dto = userServ.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> alterUser(@PathVariable Long id, @RequestBody @Valid UserDTO dto) {
+        dto = userServ.update(id, dto);
+        return ResponseEntity.ok().body(dto);
     }
 
 }
